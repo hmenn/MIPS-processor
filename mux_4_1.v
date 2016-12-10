@@ -1,4 +1,4 @@
-module mux_4_1(output out,input c0,input c1,input c2,input c3,input s1,input s0);
+module mux_4x1(output out,input c0,input c1,input c2,input c3,input s1,input s0);
 
   wire s0n,s1n; //s0 not, s1 not
   wire w1,w2,w3,w4;

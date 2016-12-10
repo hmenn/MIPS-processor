@@ -1,4 +1,10 @@
-module alu_1bit(output r,output cout,input a,input b,input [2:0] op,input cin,input lessi);
+module alu_1bit(r,cout,a,b,op,cin,lessi);
+  output r,cout; // r= result , cout= carry out
+  input a,b;  // a+b, a-b ...
+  input [2:0] op; // operators
+  // 000:and - 001:or - 010:add - 110:sub - 111:slt
+  input cin; // carry in
+  input lessi; // less i for slt
 
   wire w1,w2,w3,w3n,w4,w5,w5n,w6,w7;
 
@@ -23,6 +29,6 @@ module alu_1bit(output r,output cout,input a,input b,input [2:0] op,input cin,in
 
   and and4(w7,w6,w5n);
 
-  mux_4_1 mux0(r,w3,w2,w7,lessi,op[1],op[0]);
+  mux_4x1 mux0(r,w3,w2,w7,lessi,op[1],op[0]);
 
 endmodule
