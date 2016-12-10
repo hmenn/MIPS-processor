@@ -1,4 +1,4 @@
-module alu_4bit_test();
+module alu_1bit_test();
 
 	reg b,a;
 	wire cout;
@@ -7,18 +7,18 @@ module alu_4bit_test();
 	reg lessi;
   reg [2:0]op;
 
-	alu_1bit alu1(result,cout,a,b,op,cin,lessi);
+	alu_1bit alu1(result,cout,a,b,op,cin,1'b0);
 
 	initial begin
 	a= 1'b1; b=1'b1; cin=1'b0; op=3'b000; //add test
 	#20;
-	a= 1'b0; b=1'b0; cin=1'b1; op=3'b010;
+	a= 1'b0; b=1'b0; cin=1'b0; op=3'b000;
 	#20;
 	a= 1'b1; b=1'b0; cin=1'b0; op=3'b010;
 	#20;
 	a= 1'b1; b=1'b1; cin=1'b0; op=3'b010;
 	#20;
-	a= 1'b1; b=1'b1; cin=1'b1; op=3'b010;
+	a= 1'b1; b=1'b1; cin=1'b1; op=3'b111;
 	end
 
 	initial begin
