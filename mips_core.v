@@ -1,4 +1,5 @@
-module mips_core();
+module mips_core(clock);
+input clock;
 
 
 endmodule
