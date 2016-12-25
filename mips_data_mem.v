@@ -13,7 +13,7 @@ reg [7:0] data_mem [1023:0];
 reg [31:0] read_data;
 
 initial begin
-	$readmemb(".\\data.mem", data_mem);
+	$readmemb("data.mem", data_mem);
 end
 
 always @(mem_address or write_data or sig_mem_read or sig_mem_write) begin

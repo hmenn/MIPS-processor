@@ -5,7 +5,7 @@ output [31:0] instruction;
 reg [31:0] instr_mem [255:0];
 
 initial begin
-	$readmemb(".\\instruction.mem", instr_mem);
+	$readmemb("instruction.mem", instr_mem);
 end
 
 assign instruction = instr_mem[program_counter];

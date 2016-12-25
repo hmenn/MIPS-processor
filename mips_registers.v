@@ -8,7 +8,7 @@ module mips_registers
 	reg [31:0] registers [31:0];
 	
 	initial begin
-		$readmemb(".\\registers.mem", registers);
+		$readmemb("registers.mem", registers);
 	end
 
 	always @ (posedge clk)
