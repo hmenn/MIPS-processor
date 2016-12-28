@@ -1,10 +1,16 @@
-module program_counter(pc_out,reset,pc_in);
+module program_counter(pc_out,clock,reset,pc_in);
   // Ilk baslangic esnasinde pc yi resetlemek icin kullanilir
   input reset;
+  input clock;
   input [31:0] pc_in;
-  output [31:0] pc_out;
+  output reg [31:0] pc_out;
 
-  // ilk basta 0 ata
-  assign pc_out = reset ? 0:pc_in;
+  // her + edge clock guncellensin
+  always @ (posedge clock or posedge reset) begin
+      if(reset)
+        pc_out=0;
+      else
+        pc_out=pc_in;
+  end
 
 endmodule
