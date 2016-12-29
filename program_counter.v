@@ -7,10 +7,11 @@ module program_counter(pc_out,clock,reset,pc_in);
 
   // her + edge clock guncellensin
   always @ (posedge clock or posedge reset) begin
-      if(reset)
+    pc_out = reset ? 0 : pc_in;
+    /*  if(reset)
         pc_out=0;
       else
-        pc_out=pc_in;
+        pc_out=pc_in;*/
   end
 
 endmodule
