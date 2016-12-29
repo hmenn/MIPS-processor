@@ -68,13 +68,36 @@ end
 
 mips_registers regU(read_data_1,read_data_2,32'b11111111111111111111111111111111,rs,rt,5'b00000,signals[6],clock);
 always @ ( clock ) begin
-  $display("Reg U. Time:%2d, clk:%1b read_data_1:%32b, read_data_2:%32b\n\twrite_data:%32b, rs:%5b, rt:%5b, write_reg:%5b, sig_write:%1b",
+  $display("++Reg U. Time:%2d, clk:%1b read_data_1:%32b, read_data_2:%32b\n\twrite_data:%32b, rs:%5b, rt:%5b, write_reg:%5b, sig_write:%1b",
         $time,clock,read_data_1,read_data_2,32'b11111111111111111111111111111111,rs,rt,5'b00000,signals[6]);
 end
 
+// EXTENDER
 
+wire [31:0]immEx;
+// TODO: simdilik sign extend var, diger inst icin 1 olarak yer control biti olacak
+extender_32bit extender(immEx,immediate,1'b0);
 
+// ALU
 
+// alu 2.source girisi
+wire [31:0]aluIn2;
+wire [31:0]aluRes;
+wire zero;
+
+mux_2_1 mux2_0(aluIn2,immEx,read_data_2,signals[5]);
+always @ ( clock ) begin
+  $display("ALUMUX. Time:%2d ALUSrc:%1b , In1(EXT):%32b In2(read2):%32b out:%32b",
+            $time,signals[5],immEx,read_data_2,aluIn2);
+end
+
+//TODO: ALU OP 000 veriildi, control sinyaline gore degismeli
+assign ALUOp=3'b010;
+alu_32bit ALU32(zero,aluRes,read_data_1,aluIn2,ALUOp);
+always @ ( clock ) begin
+  $display("ALU. Time:%2d Op:%3b, In1:%32b, In2:%32b, Zero:%1b , Res:%32b",
+            $time,ALUOp,read_data_1,aluIn2,zero,aluRes);
+end
 
 
 //assign pc_in ={32{1'b1}};
