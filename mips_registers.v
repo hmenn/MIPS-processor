@@ -13,9 +13,13 @@ module mips_registers
 	end
 
 
+	assign read_data_1 = registers[read_reg_1];
+	assign read_data_2 = registers[read_reg_2];
+
 	// pozitif sinyal atlamalarında calisir
 	// reg_write gelirse registere yazar
 	// TEST Bench yazilmistir
+	// 1 iken yazma evresi
 	always @ (posedge clk)
 	begin
 		if (signal_reg_write) begin
@@ -24,9 +28,6 @@ module mips_registers
 		end
 	end
 
-	//okuma yapar
-	assign read_data_1 = registers[read_reg_1];
-	assign read_data_2 = registers[read_reg_2];
 
 
 endmodule

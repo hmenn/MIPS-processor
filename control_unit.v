@@ -12,7 +12,7 @@ module control_unit(ins,out_signals,ALUOp);
 
   parameter num_signals=7;
   output [num_signals-1:0] out_signals;
-  output [1:0] ALUOp;
+  output [2:0] ALUOp;
 
   wire Rtype;
   wire lw;

@@ -1,7 +1,7 @@
 module control_unit_test();
 
 parameter num_signals=7;
-wire [1:0] ALUOp;
+wire [2:0] ALUOp;
 reg [5:0] ins;
 wire [num_signals-1:0] signals;
 
