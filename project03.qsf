@@ -54,6 +54,14 @@ set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_RO
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_global_assignment -name VERILOG_FILE program_counter_test.v
+set_global_assignment -name VERILOG_FILE program_counter.v
+set_global_assignment -name VERILOG_FILE mux_2_1_test.v
+set_global_assignment -name VERILOG_FILE mux_2_1.v
+set_global_assignment -name VERILOG_FILE mips_registers_test.v
+set_global_assignment -name VERILOG_FILE mips_data_mem_test.v
+set_global_assignment -name VERILOG_FILE alu_control_unit_test.v
+set_global_assignment -name VERILOG_FILE alu_control_unit.v
 set_global_assignment -name VERILOG_FILE mux_4_1.v
 set_global_assignment -name VERILOG_FILE msb_1bit_test.v
 set_global_assignment -name VERILOG_FILE msb_1bit.v

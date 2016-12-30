@@ -25,11 +25,11 @@ end
 
 always begin
   #10
-  write_data+=1;
+  write_data<=write_data+1;
   signal_reg_write=~signal_reg_write;
   clk=~clk;
   //read_reg_1+=1;
-  read_reg_2+=1;
+  read_reg_2<=read_reg_2+1;
 
 end
 

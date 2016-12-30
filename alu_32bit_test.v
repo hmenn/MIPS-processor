@@ -1,4 +1,4 @@
-`include "alu_32bit.v"
+//`include "alu_32bit.v"
 module alu_32bit_test();
 
   reg [3:0] op;

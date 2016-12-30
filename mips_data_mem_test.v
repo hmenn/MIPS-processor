@@ -1,4 +1,4 @@
-`include "mips_data_mem.v"
+//`include "mips_data_mem.v"
 
 module mips_data_mem_test();
 

@@ -1,6 +1,6 @@
-`include "mux_4_1.v"
-`include "msb_1bit.v"
-`include "alu_1bit.v"
+//`include "mux_4_1.v"
+//`include "msb_1bit.v"
+//`include "alu_1bit.v"
 
 module alu_32bit(zero,result,first,second,op,shamt);
   input [31:0] first,second;

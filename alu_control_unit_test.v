@@ -1,4 +1,4 @@
-`include "alu_control_unit.v"
+//`include "alu_control_unit.v"
 module alu_control_unit_test();
 
   wire [3:0] ALUCtl;

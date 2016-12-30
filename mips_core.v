@@ -1,21 +1,21 @@
-`include "mux_2_1.v"
+/*`include "mux_2_1.v"
 `include "extender_32bit.v"
 `include "mips_registers.v"
 `include "alu_32bit.v"
 `include "control_unit.v"
 `include "mips_instr_mem.v"
-`include "program_counter.v"
+`include "program_counter.v"*/
 
 module mips_core(clock,reset);
 input clock;
 input reset; // ilk instruction icin pc resetlenmeli
 
 
-output wire [31:0] pc;
-output wire [31:0] pc_new;
+wire [31:0] pc;
+wire [31:0] pc_new;
 
 // instrucion unit members
-output wire [31:0] instruction;
+wire [31:0] instruction;
 
 wire [5:0] opcode,funcode;
 wire [4:0] rs,rt,rd,shmt;
