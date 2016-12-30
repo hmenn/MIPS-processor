@@ -20,12 +20,12 @@ always @(mem_address or write_data or sig_mem_read or sig_mem_write) begin
 	if (sig_mem_read) begin
 		read_data = {data_mem[mem_address], data_mem[mem_address+1], data_mem[mem_address+2], data_mem[mem_address+3]};
 	end
-	
+
 	if (sig_mem_write) begin
-		data_mem[mem_address] <= write_data[7:0];
-		data_mem[mem_address+1] <= write_data[15:8];
-		data_mem[mem_address+2] <= write_data[23:16];
-		data_mem[mem_address+3] <= write_data[31:24];
+		data_mem[mem_address+3] <= write_data[7:0];
+		data_mem[mem_address+2] <= write_data[15:8];
+		data_mem[mem_address+1] <= write_data[23:16];
+		data_mem[mem_address] <= write_data[31:24];
 	end
 end
 

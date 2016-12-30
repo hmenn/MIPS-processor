@@ -62,7 +62,7 @@ control_unit conU(opcode,signals,ALUOp);
 // REGISTER UNIT
 
 // TODO : WRITE DATA, wrıte reg DUZENLENECEK
-mips_registers regU(read_data_1,read_data_2,32'b11111111111111111111111111111111,rs,rt,5'b00000,signals[6],clock);
+mips_registers regU(read_data_1,read_data_2,32'd1,rs,rt,5'd0,signals[6],clock);
 
 // EXTENDER
 wire [31:0]immEx;
@@ -85,7 +85,7 @@ always @ ( clock ) begin
     $time,clock,reset,pc,instruction,opcode,rs,rt,rd,shmt,funcode,immediate);
   $display(" |-->Control U. SIGNALS FOR INS:%6b ALUOp:%3b",opcode,signals,ALUOp);
   $display(" |-->Reg U. read_data_1:%32b\n\t|-->read_data_2:%32b\n\t|-->write_data :%32b write_reg:%5b, sig_write:%1b",
-        read_data_1,read_data_2,32'b11111111111111111111111111111111,5'b00000,signals[6]);
+        read_data_1,read_data_2,32'd1,5'b00000,signals[6]);
   $display(" |-->ALUMUX. ALUSrc:%1b\n\t|-->In1(EXT)  :%32b\n\t|-->In2(read2):%32b\n\t|-->out       :%32b",
                   signals[5],immEx,read_data_2,aluIn2);
   $display(" |-->ALU. Op:%3b\n\t|-->In1:%32b\n\t|-->In2:%32b\n\t|-->Res:%32b Zero:%1b",
