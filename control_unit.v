@@ -93,10 +93,9 @@ module control_unit(ins,out_signals,ALUOp);
                 (((ins == LW)||(ins==SW)||(ins==ADDI)
                   ||(ins==ADDIU)||(ins==LBU)||(ins==LHU)
                   ||(ins==LUI)||(ins==SB)||(ins==SH))? 3'b000:
-                ((ins==NOR)? 3'b011:
                 ((ins==ANDI)? 3'b100:
                 ((ins==ORI)? 3'b101:
-                ((((ins==SLTI)||(ins==SLTIU))?3'b110: 3'b000)))))));
+                ((((ins==SLTI)||(ins==SLTIU))?3'b110: 3'b000))))));
 
 
 
