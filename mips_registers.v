@@ -24,7 +24,7 @@ module mips_registers
 	begin
 		if (signal_reg_write) begin
 			registers[write_reg] <= write_data;
-			$display("time:%2d registere:%5b yazildi %32b",$time,write_reg,write_data);
+			$display("Time:%2d reg:%5b'e %32b yazildi",$time,write_reg,write_data);
 		end
 	end
 

@@ -14,6 +14,8 @@ module alu_control_unit_test();
   localparam SUBUFunc =6'b100011;
   localparam SLTFunc =6'b101010;
   localparam SLTUFunc =6'b101001;
+  localparam SLLFunc = 6'b000000;
+  localparam SRLFunc = 6'b000010;
 
   alu_control_unit alucu(ALUCtl,ALUOp,func);
 
@@ -68,6 +70,14 @@ module alu_control_unit_test();
     #20;
     ALUOp=3'b010; // sltu
     func =SLTUFunc;
+    #20;
+    $display("\nSLL");
+    ALUOp=3'b010; // sll
+    func =SLLFunc;
+    #20;
+    $display("\nSRL");
+    ALUOp=3'b010; // nor
+    func =SRLFunc;
     #20;
 
   end

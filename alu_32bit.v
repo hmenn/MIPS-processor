@@ -2,16 +2,27 @@
 `include "msb_1bit.v"
 `include "alu_1bit.v"
 
-module alu_32bit(output zero,output [31:0]result,input[31:0]first,input[31:0]second,input[2:0]op);
-  /*input [31:0] first,second;
-  input [2:0] op; // alu control operation
+module alu_32bit(zero,result,first,second,op,shamt);
+  input [31:0] first,second;
+  input [3:0] op; // alu control operation
+  input [4:0] shamt; // shift amount
   output [31:0] result;
   output zero; // is zero*/
 
+  assign result = (op == 4'b0000) ? (first & second): // and
+  (op == 4'b0001 ? (first | second) : // or
+  (op == 4'b0010 ? (first + second) : // add
+  (op == 4'b0110 ? (first - second) : // sub
+  (op == 4'b0111 ? ((first < second) ? 32'd1 : 32'd0) : // slt
+  (op == 4'b1100 ? ~(first | second) : // nor
+  (op == 4'b1101 ? (first << shamt)  :
+  (op == 4'b1110 ? (first >> shamt)  : 32'dx)))))));
+
+  assign zero= result==32'd0 ? 1'b1 : 1'b0;
+
+/*
   wire c[32:1]; // carry bits
-
   wire v; // v for overflow
-
   wire set;
 
   alu_1bit alu0(result[0],c[1],first[0],second[0],op,op[2],set);
@@ -46,8 +57,6 @@ module alu_32bit(output zero,output [31:0]result,input[31:0]first,input[31:0]sec
   alu_1bit alu29(result[29],c[30],first[29],second[29],op,c[29],1'b0);
   alu_1bit alu30(result[30],c[31],first[30],second[30],op,c[30],1'b0);
   msb_1bit msb1(result[31],c[32],first[31],second[31],op,c[31],1'b0,v,set);
-
   nor nor1(zero,result);
-
-
+*/
 endmodule

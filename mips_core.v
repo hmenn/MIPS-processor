@@ -90,19 +90,11 @@ always @ ( clock ) begin
                   signals[5],immEx,read_data_2,aluIn2);
   $display(" |-->ALU. Op:%3b\n\t|-->In1:%32b\n\t|-->In2:%32b\n\t|-->Res:%32b Zero:%1b",
             ALUOp,read_data_1,aluIn2,aluRes,zero);
-
 end
 
 
 //assign pc_in ={32{1'b1}};
 assign pc_new = pc+4;
-/*
-assign ALUOut = (ALUFunc == 4'b0010) ? (regData+ ALU2):
-(4'b0110 ? (regData - ALU2) :
-(4'b0000 ? (regData & ALU2) :
-(4'b0001 ? (regData | ALU2) :
-(4'b1010 ? (ALU2 << shamt)  :
-(4'b1100 ? (ALU2 >>shamt)   : 0)))));
-*/
+
 
 endmodule

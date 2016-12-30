@@ -10,6 +10,8 @@ module alu_control_unit(ALUCtl,ALUOp,func);
   wire subOp;
   wire sltOp;
   wire norOp;
+  wire sllOp;
+  wire srlOp;
 
   localparam ANDFunc =6'b100100;
   localparam ADDFunc =6'b100000;
@@ -20,6 +22,8 @@ module alu_control_unit(ALUCtl,ALUOp,func);
   localparam SUBUFunc =6'b100011;
   localparam SLTFunc =6'b101010;
   localparam SLTUFunc =6'b101001;
+  localparam SLLFunc = 6'b000000;
+  localparam SRLFunc = 6'b000010;
 
   assign andOp = ((ALUOp==3'b010)&&(func==ANDFunc)) || (ALUOp==3'b100) ? 1'b1 : 1'b0;
 
@@ -39,10 +43,17 @@ module alu_control_unit(ALUCtl,ALUOp,func);
                   (ALUOp==3'b110) // slti, sltiu
                   ? 1'b1 : 1'b0;
 
+  assign sllOp = ((ALUOp==3'b010)&&(func==SLLFunc)) //sll
+                  ? 1'b1 : 1'b0;
+  assign srlOp = ((ALUOp==3'b010)&&(func==SRLFunc)) //sll
+                  ? 1'b1 : 1'b0;
+
   assign ALUCtl = andOp  ? 4'b0000 :
                   (addOp ? 4'b0010 :
                   (orOp  ? 4'b0001 :
-                  (norOp ? 4'b1100 :
                   (subOp ? 4'b0110 :
-                  (sltOp ? 4'b0111 : 4'b1111)))));
+                  (sltOp ? 4'b0111 :
+                  (norOp ? 4'b1100 :
+                  (sllOp ? 4'b1101 :
+                  (srlOp ? 4'b1110 : 4'b1111)))))));
 endmodule
