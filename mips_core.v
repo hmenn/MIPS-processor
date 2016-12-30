@@ -1,3 +1,11 @@
+`include "mux_2_1.v"
+`include "extender_32bit.v"
+`include "mips_registers.v"
+`include "alu_32bit.v"
+`include "control_unit.v"
+`include "mips_instr_mem.v"
+`include "program_counter.v"
+
 module mips_core(clock,reset,pc,pc_new,instruction);
 input clock;
 input reset; // ilk instruction icin pc resetlenmeli

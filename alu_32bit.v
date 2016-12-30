@@ -1,3 +1,7 @@
+`include "mux_4_1.v"
+`include "msb_1bit.v"
+`include "alu_1bit.v"
+
 module alu_32bit(output zero,output [31:0]result,input[31:0]first,input[31:0]second,input[2:0]op);
   /*input [31:0] first,second;
   input [2:0] op; // alu control operation

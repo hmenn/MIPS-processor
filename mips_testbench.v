@@ -1,3 +1,4 @@
+`include "mips_core.v"
 module mips_testbench ();
 reg clock;
 reg reset;
