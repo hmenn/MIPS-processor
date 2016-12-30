@@ -39,9 +39,9 @@ module alu_control_unit(ALUCtl,ALUOp,func);
                   (ALUOp==3'b110) // slti, sltiu
                   ? 1'b1 : 1'b0;
 
-  assign ALUCtl = andOp ? 4'b0000 :
+  assign ALUCtl = andOp  ? 4'b0000 :
                   (addOp ? 4'b0010 :
-                  (orOp ? 4'b0001 :
+                  (orOp  ? 4'b0001 :
                   (norOp ? 4'b1100 :
                   (subOp ? 4'b0110 :
                   (sltOp ? 4'b0111 : 4'b1111)))));
