@@ -5,8 +5,7 @@ module control_unit_test();
 parameter num_signals=8;
 wire [2:0] ALUOp;
 reg [5:0] ins;
-reg [5:0] func;
-wire [num_signals-1:0] signals;
+wire [0:num_signals-1] signals;
 
 
 localparam R_TYPE = 6'b000000;
@@ -41,7 +40,7 @@ localparam SW = 6'b101011;
 localparam SUB = 6'b100010;
 localparam SUBU = 6'b100011;
 
-control_unit cnt(ins,func,signals,ALUOp);
+control_unit cnt(ins,signals,ALUOp);
 
 initial begin
   ins =R_TYPE; // Rtype
@@ -69,12 +68,6 @@ initial begin
   ins =J;
   #20;
   ins =LBU;
-  #20;
-  ins =R_TYPE;
-  func=JR;
-  #20;
-  ins =R_TYPE;
-  func=SUBU;
   #20;
 end
 

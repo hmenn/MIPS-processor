@@ -1,22 +1,22 @@
 // output signals
 // 0. RegDst
-// 1. Branch
+// 1. BranchEqual
 // 2. MemRead
 // 3. MemtoReg
 // 4. MemWrite
 // 5. ALUSrc
 // 6. RegWrite
 // 7. ExtendType
+// 8. BranchNotEqual
 
 //iverilog mips_core.v mips_testbench.v program_counter.v mips_instr_mem.v control_unit.v mips_registers.v extender_32bit.v mux_2_1.v alu_32bit.v alu_1bit.v msb_1bit.v mux_4_1.v
 
-module control_unit(ins,func,out_signals,ALUOp);
+module control_unit(ins,out_signals,ALUOp);
 
   input [5:0] ins;
-  input [5:0] func;
 
-  parameter num_signals=8;
-  output [num_signals-1:0] out_signals;
+  parameter num_signals=9;
+  output [0:num_signals-1] out_signals;
   output [2:0] ALUOp;
 
   localparam R_TYPE = 6'b000000;
@@ -56,7 +56,7 @@ module control_unit(ins,func,out_signals,ALUOp);
   // RegDst
   assign out_signals[0] = (ins== R_TYPE)? 1'b1: 1'b0;
 
-  // Branch
+  // BranchEqual
   assign out_signals[1] = (ins== BEQ)? 1'b1: 1'b0;
 
   // MemRead
@@ -74,7 +74,6 @@ module control_unit(ins,func,out_signals,ALUOp);
   // RegWrite
   // completed!
   assign out_signals[6] = (
-                  (ins != J)|| // jump reg yazmaz
                   (ins == R_TYPE)||
                   (ins == ADDI)||
                   (ins == ADDIU)||
@@ -90,9 +89,12 @@ module control_unit(ins,func,out_signals,ALUOp);
                   )? 1'b1: 1'b0;
 
   // ExtendType , sigextedn or unsigned exted
-  assign out_signals[7]= ((ins==ADDIU)||(ins==LBU)||(ins==LHU)||(ins==SLTIU))||
-                        ((ins==R_TYPE)&&((func==ADDU)||(func==SLTU)||(func==SUBU)))
+  assign out_signals[7]= ((ins==ADDIU)||(ins==LBU)||(ins==LHU)||(ins==SLTIU))
                         ? 1'b0: 1'b1;
+
+
+  // Branch Not Eqaul
+  assign out_signals[8] = (ins == BNE)? 1'b1 : 1'b0;
 
   // ALUOP
   assign ALUOp = (ins == R_TYPE) ? 3'b010 :
