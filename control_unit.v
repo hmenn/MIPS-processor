@@ -8,6 +8,7 @@
 // 6. RegWrite
 // 7. ExtendType
 // 8. BranchNotEqual
+// 9. Jump
 
 //iverilog mips_core.v mips_testbench.v program_counter.v mips_instr_mem.v control_unit.v mips_registers.v extender_32bit.v mux_2_1.v alu_32bit.v alu_1bit.v msb_1bit.v mux_4_1.v
 
@@ -15,7 +16,7 @@ module control_unit(ins,out_signals,ALUOp);
 
   input [5:0] ins;
 
-  parameter num_signals=9;
+  parameter num_signals=10;
   output [0:num_signals-1] out_signals;
   output [2:0] ALUOp;
 
@@ -95,6 +96,8 @@ module control_unit(ins,out_signals,ALUOp);
 
   // Branch Not Eqaul
   assign out_signals[8] = (ins == BNE)? 1'b1 : 1'b0;
+
+  assign out_signals[9] = ((ins == J)||(ins == JAL))?1'b1:1'b0;
 
   // ALUOP
   assign ALUOp = (ins == R_TYPE) ? 3'b010 :

@@ -33,7 +33,8 @@ wire [15:0] immediate;
 // 6. RegWrite
 // 7. ExtendType
 // 8. BranchNotEqual
-localparam  SIGNAL_NUM = 9;
+// 9. Jump
+localparam  SIGNAL_NUM = 10;
 wire [0:SIGNAL_NUM-1] signals;
 wire [2:0] ALUOp;
 
@@ -103,14 +104,20 @@ assign branchChoice = ((signals[1]==1'b1)&&(zero==1'b1))||((signals[8]==1'b1)&&(
 
 wire [31:0]pc4;
 assign pc4=pc+4;
-wire [31:0] brachMuxRes;
-assign brachMuxRes = branchChoice? (pc4+(immEx<<2)):pc4;
+wire [31:0] branchMuxRes;
+assign branchMuxRes = branchChoice? (pc4+(immEx<<2)):pc4;
 
+wire [25:0]j26;
+wire [31:0] jumpAddress;
+assign j26 = instruction[25:0];
+
+assign jumpAddress =  {pc4[31:28],(j26),2'b00};
+assign pc_new = signals[9]?jumpAddress:branchMuxRes;
 
 always @ ( clock ) begin
   $display("\nTime:%2d, CLK:%1b, RST:%1b, PC:%32b\n\t|-->Instruction:%32b\n\t|-->op:%6b, rs:%5b, rt:%5b, rd:%5b, shmt:%5b, funcode:%6b, imm:%15b",
     $time,clock,reset,pc,instruction,opcode,rs,rt,rd,shmt,funcode,immediate);
-  $display(" |-->Control U. SIGNALS FOR INS:%8b ALUOp:%3b\t",signals,ALUOp);
+  $display(" |-->Control U. SIGNALS FOR INS:%10b ALUOp:%3b\t",signals,ALUOp);
   $display(" |-->Reg U. read_data_1:%32b\n\t|-->read_data_2:%32b\n\t|-->write_data :%32b write_reg:%5b, sig_write_reg:%1b",
         read_data_1,read_data_2,write_data_reg,write_reg,signals[6]);
   $display(" |-->ALUMUX. ALUSrc:%1b\n\t|-->In1(EXT)  :%32b\n\t|-->In2(read2):%32b\n\t|-->out       :%32b",
@@ -122,11 +129,13 @@ always @ ( clock ) begin
   $display(" |-->MemToRegmux in1:%32b\n\t|-->in0:%32b\n\t|-->out:%32b MemToRegSignal:%1b"
           ,read_data_mem,aluRes,write_data_reg,signals[3]);
   $display(" |-->Branch beq:%1b bne:%1b zero:%1b  branchChoice:%1b\n\t|-->In0:%32b\n\t|-->In1:%32b\n\t|-->res:%32b",
-          signals[1],signals[8],zero,branchChoice,pc4,(pc4+(immEx<<2)),brachMuxRes);
+          signals[1],signals[8],zero,branchChoice,pc4,(pc4+(immEx<<2)),branchMuxRes);
+  $display(" |-->Jump Address:%32b JmpSignal:%1b newPC:%32b",jumpAddress,signals[9],pc_new);
 end
 
 
-assign pc_new = pc+4;
+
+
 
 
 endmodule

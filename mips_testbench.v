@@ -31,7 +31,7 @@ initial begin
   $display("\n#######Time:%2d, PC reseted #######",$time);
   /*$monitor("MipsCoreTest Time:%2d, clk:%1b, rst:%1b, pc_curr:%32b, pc_new:%32b, ins:%32b\n",
             $time,clock,reset,pc_in,pc_next,instruction);*/
-  #25 $finish;
+  #50 $finish;
 end
 
 always begin
