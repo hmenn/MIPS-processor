@@ -2,9 +2,31 @@
 module mips_testbench ();
 reg clock;
 reg reset;
-
-mips_core core_tb(clock,reset);
 /*
+TEST ICIN KULLANDIGIM INS.
+add
+and
+or
+sub..
+set less than cevabı 1
+set less than cevabı 0
+beq
+bnq
+jump
+(bunların hepsi bir sonraki ins. atlıyor)
+loadword
+store word
+addImm
+AndImm
+orImm
+setLess than Imm
+Add Imm Unsigned
+setless than Imm Unsigned cevap 1
+set less than Imm Unsigned cavap 0
+sonuncusu da nor
+*/
+mips_core core_tb(clock,reset);
+
 initial begin
 		reset = 1;
 		#5 reset = 0;
@@ -31,7 +53,7 @@ initial begin
   $display("\n#######Time:%2d, PC reseted #######",$time);
   /*$monitor("MipsCoreTest Time:%2d, clk:%1b, rst:%1b, pc_curr:%32b, pc_new:%32b, ins:%32b\n",
             $time,clock,reset,pc_in,pc_next,instruction);*/
-  #50 $finish;
+  #200 $finish;
 end
 
 always begin
