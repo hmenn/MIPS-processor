@@ -2,10 +2,12 @@
 
 module control_unit_test();
 
-parameter num_signals=7;
+parameter num_signals=8;
 wire [2:0] ALUOp;
 reg [5:0] ins;
+reg [5:0] func;
 wire [num_signals-1:0] signals;
+
 
 localparam R_TYPE = 6'b000000;
 localparam J_TYPE = 6'b00001x;
@@ -19,7 +21,7 @@ localparam BEQ = 6'b000100;
 localparam BNE = 6'b000101;
 localparam J = 6'b000010;
 localparam JAL = 6'b000011;
-localparam JR = 6'b000000;
+localparam JR = 6'b001000;
 localparam LBU = 6'b100100;
 localparam LHU = 6'b100101;
 localparam LUI = 6'b001111;
@@ -39,7 +41,7 @@ localparam SW = 6'b101011;
 localparam SUB = 6'b100010;
 localparam SUBU = 6'b100011;
 
-control_unit cnt(ins,signals,ALUOp);
+control_unit cnt(ins,func,signals,ALUOp);
 
 initial begin
   ins =R_TYPE; // Rtype
@@ -66,13 +68,19 @@ initial begin
   #20;
   ins =J;
   #20;
-  ins =JR;
+  ins =LBU;
+  #20;
+  ins =R_TYPE;
+  func=JR;
+  #20;
+  ins =R_TYPE;
+  func=SUBU;
   #20;
 end
 
 initial begin
-  $monitor("Time=%2d, OPCODE:%6b, ALUOp:%3b RegDst:%1b,Branch:%1b,MemRead:%1b,MemtoReg:%1b,MemWrite:%1b,ALUSrc:%1b,RegWrite:%1b",
-        $time,ins,ALUOp,signals[0],signals[1],signals[2],signals[3],signals[4],signals[5],signals[6]);
+  $monitor("Time=%2d, OPCODE:%6b, ALUOp:%3b RegDst:%1b,Branch:%1b,MemRead:%1b,MemtoReg:%1b,MemWrite:%1b,ALUSrc:%1b,RegWrite:%1b,SignExt:%1b",
+        $time,ins,ALUOp,signals[0],signals[1],signals[2],signals[3],signals[4],signals[5],signals[6],signals[7]);
 end
 
 

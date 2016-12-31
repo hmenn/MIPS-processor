@@ -6,14 +6,16 @@
 // 4. MemWrite
 // 5. ALUSrc
 // 6. RegWrite
+// 7. ExtendType
 
 //iverilog mips_core.v mips_testbench.v program_counter.v mips_instr_mem.v control_unit.v mips_registers.v extender_32bit.v mux_2_1.v alu_32bit.v alu_1bit.v msb_1bit.v mux_4_1.v
 
-module control_unit(ins,out_signals,ALUOp);
+module control_unit(ins,func,out_signals,ALUOp);
 
   input [5:0] ins;
+  input [5:0] func;
 
-  parameter num_signals=7;
+  parameter num_signals=8;
   output [num_signals-1:0] out_signals;
   output [2:0] ALUOp;
 
@@ -29,7 +31,7 @@ module control_unit(ins,out_signals,ALUOp);
   localparam BNE = 6'b000101;
   localparam J = 6'b000010;
   localparam JAL = 6'b000011;
-  localparam JR = 6'b000000;
+  localparam JR = 6'b001000;
   localparam LBU = 6'b100100;
   localparam LHU = 6'b100101;
   localparam LUI = 6'b001111;
@@ -86,6 +88,11 @@ module control_unit(ins,out_signals,ALUOp);
                   (ins == SLTI)||
                   (ins == SLTIU)
                   )? 1'b1: 1'b0;
+
+  // ExtendType , sigextedn or unsigned exted
+  assign out_signals[7]= ((ins==ADDIU)||(ins==LBU)||(ins==LHU)||(ins==SLTIU))||
+                        ((ins==R_TYPE)&&((func==ADDU)||(func==SLTU)||(func==SUBU)))
+                        ? 1'b0: 1'b1;
 
   // ALUOP
   assign ALUOp = (ins == R_TYPE) ? 3'b010 :

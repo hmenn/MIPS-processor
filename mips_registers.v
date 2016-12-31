@@ -12,7 +12,6 @@ module mips_registers
 		$readmemb("registers.mem", registers);
 	end
 
-
 	assign read_data_1 = registers[read_reg_1];
 	assign read_data_2 = registers[read_reg_2];
 
@@ -24,6 +23,7 @@ module mips_registers
 	begin
 		if (signal_reg_write) begin
 			registers[write_reg] <= write_data;
+			//$writememb("test.mem",registers);
 			$display("Time:%2d reg:%5b'e %32b yazildi",$time,write_reg,write_data);
 		end
 	end

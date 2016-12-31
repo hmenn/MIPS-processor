@@ -1,10 +1,12 @@
-/*`include "mux_2_1.v"
+`include "mux_2_1.v"
 `include "extender_32bit.v"
 `include "mips_registers.v"
 `include "alu_32bit.v"
 `include "control_unit.v"
 `include "mips_instr_mem.v"
-`include "program_counter.v"*/
+`include "program_counter.v"
+`include "alu_control_unit.v"
+`include "mips_data_mem.v"
 
 module mips_core(clock,reset);
 input clock;
@@ -30,7 +32,9 @@ wire [15:0] immediate;
 // 4. MemWrite
 // 5. ALUSrc
 // 6. RegWrite
-wire [6:0] signals;
+// 7. ExtendType
+localparam  SIGNAL_NUM = 8;
+wire [SIGNAL_NUM-1:0] signals;
 wire [2:0] ALUOp;
 
 // register unit members
@@ -57,17 +61,21 @@ assign funcode = instruction[5:0];
 assign immediate = instruction[15:0];
 
 // CONTROL UNIT
-control_unit conU(opcode,signals,ALUOp);
+control_unit conU(opcode,funcode,signals,ALUOp);
 
 // REGISTER UNIT
 
-// TODO : WRITE DATA, wrıte reg DUZENLENECEK
-mips_registers regU(read_data_1,read_data_2,32'd1,rs,rt,5'd0,signals[6],clock);
+wire [31:0] write_data_reg;
+assign write_reg = signals[0] ? rd : rt;
+mips_registers regU(read_data_1,read_data_2,write_data_reg,rs,rt,write_reg,signals[6],clock);
 
 // EXTENDER
 wire [31:0]immEx;
-// TODO: simdilik sign extend var, diger inst icin 1 olarak yer control biti olacak
-extender_32bit extender(immEx,immediate,1'b0);
+extender_32bit extender(immEx,immediate,signals[7]);
+
+// ALU Control
+wire [3:0]ALUCtl;
+alu_control_unit alucu(ALUCtl,ALUOp,funcode);
 
 // ALU
 // alu 2.source girisi
@@ -75,21 +83,29 @@ wire [31:0]aluIn2;
 wire [31:0]aluRes;
 wire zero;
 
-mux_2_1 mux2_0(aluIn2,immEx,read_data_2,signals[5]);
+mux_2_1 aluMux(aluIn2,immEx,read_data_2,signals[5]);
+alu_32bit ALU32(zero,aluRes,read_data_1,aluIn2,ALUCtl,shmt);
 
-//TODO: ALU OP 000 veriildi, control sinyaline gore degismeli
-assign ALUOp=3'b010;
-alu_32bit ALU32(zero,aluRes,read_data_1,aluIn2,ALUOp);
+
+// Data Memory
+wire [31:0] read_data_mem;
+mips_data_mem dmU(read_data_mem,aluRes,read_data_2,signals[2],signals[4]);
+
+// memToReg sinyali varsa memden yoksa aludan al yaz
+assign write_data_reg = signals[3] ? read_data_mem : aluRes;
+
 always @ ( clock ) begin
   $display("\nTime:%2d, CLK:%1b, RST:%1b, PC:%32b\n\t|-->Instruction:%32b\n\t|-->op:%6b, rs:%5b, rt:%5b, rd:%5b, shmt:%5b, funcode:%6b, imm:%15b",
     $time,clock,reset,pc,instruction,opcode,rs,rt,rd,shmt,funcode,immediate);
-  $display(" |-->Control U. SIGNALS FOR INS:%6b ALUOp:%3b",opcode,signals,ALUOp);
+  $display(" |-->Control U. SIGNALS FOR INS:%8b ALUOp:%3b\t",signals,ALUOp);
   $display(" |-->Reg U. read_data_1:%32b\n\t|-->read_data_2:%32b\n\t|-->write_data :%32b write_reg:%5b, sig_write:%1b",
-        read_data_1,read_data_2,32'd1,5'b00000,signals[6]);
+        read_data_1,read_data_2,write_data_reg,write_reg,signals[6]);
   $display(" |-->ALUMUX. ALUSrc:%1b\n\t|-->In1(EXT)  :%32b\n\t|-->In2(read2):%32b\n\t|-->out       :%32b",
                   signals[5],immEx,read_data_2,aluIn2);
   $display(" |-->ALU. Op:%3b\n\t|-->In1:%32b\n\t|-->In2:%32b\n\t|-->Res:%32b Zero:%1b",
             ALUOp,read_data_1,aluIn2,aluRes,zero);
+  $display(" |-->Data Mem memRead:%1b memWrite:%1b\n\t|-->Address:%32b\n\t|-->ReadData:%32b\n\t|-->WriteData:%32b"
+          ,signals[2],signals[4],aluRes,read_data_mem,read_data_2);
 end
 
 
